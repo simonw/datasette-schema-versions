@@ -20,16 +20,16 @@ async def test_schema_versions_json(datasette_and_dbs):
     datasette, db1, db2 = datasette_and_dbs
     response = await datasette.client.get("/-/schema-versions.json")
     assert 200 == response.status_code
-    assert response.json() == {"data1": 1, "data2": 1}
+    assert response.json() == {"data1": 1, "data2": 1, "_internal": 0}
     # Inserting records should change nothing
     db1["foo"].insert({"bar": 1})
     db2["foo"].insert({"bar": 1})
     response = await datasette.client.get("/-/schema-versions.json")
-    assert response.json() == {"data1": 1, "data2": 1}
+    assert response.json() == {"data1": 1, "data2": 1, "_internal": 0}
     # But modifying the schema should cause a change
     db1["baz"].insert({"baz": 1})
     response = await datasette.client.get("/-/schema-versions.json")
-    assert response.json() == {"data1": 2, "data2": 1}
+    assert response.json() == {"data1": 2, "data2": 1, "_internal": 0}
 
 
 @pytest.mark.asyncio

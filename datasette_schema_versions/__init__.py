@@ -23,10 +23,15 @@ async def schema_versions_json(datasette):
 async def _schema_versions(datasette):
     schema_versions = {}
     for name, database in datasette.databases.items():
-        if name != "_internal":
-            schema_versions[name] = (
-                await database.execute("PRAGMA schema_version")
-            ).first()[0]
+        schema_versions[name] = (
+            await database.execute("PRAGMA schema_version")
+        ).first()[0]
+    # And do the internal one if on Datasette 1.0
+    if hasattr(datasette, "get_internal_database"):
+        internal_db = datasette.get_internal_database()
+        schema_versions["_internal"] = (
+            await internal_db.execute("PRAGMA schema_version")
+        ).first()[0]
     return schema_versions
 
 
