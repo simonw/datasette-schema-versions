@@ -10,9 +10,9 @@ Datasette plugin that shows the schema version of every attached database
 ## Installation
 
 Install this plugin in the same environment as Datasette.
-
-    $ datasette install datasette-schema-versions
-
+```bash
+datasette install datasette-schema-versions
+```
 ## Usage
 
 Visit `/-/schema-versions` on your Datasette instance to see a numeric version for the schema for each of your databases.
